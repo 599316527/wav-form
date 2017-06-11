@@ -1,0 +1,29 @@
+{
+  "name": "wav-form",
+  "version": "0.0.1",
+  "description": "draw png waveform from an audio file",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/AZOPCORP/wav-form.git"
+  },
+  "keywords": [
+    "waveform",
+    "audio",
+    "png"
+  ],
+  "author": "AZOPCORP",
+  "license": "WTFPL",
+  "bugs": {
+    "url": "https://github.com/AZOPCORP/wav-form/issues"
+  },
+  "homepage": "https://github.com/AZOPCORP/wav-form#readme",
+  "dependencies": {
+    "audio-context": "^1.0.1",
+    "audio-decode": "^1.2.5",
+    "canvas": "^1.6.5"
+  }
+}
