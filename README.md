@@ -16,7 +16,7 @@ npm install wav-form --save
 
 ```javascript
 
-var makewav=require('waveforms');
+var makewav=require('wav-form');
 var fs= require('fs');
 
 
