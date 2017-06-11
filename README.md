@@ -4,7 +4,7 @@
 
 <img class="resp" src="https://azopcorp.com/images/waveform.png">
 
-this node draws waveform from wav , mp3 and flac audio .
+this module draws waveform from wav , mp3 and flac audio .
 
 ### USAGE:
 
