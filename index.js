@@ -1,40 +1,53 @@
-const Canvas = require('canvas');
+const { createCanvas, loadImage } = require('canvas')
 const decode = require('audio-decode');
 const getContext = require('audio-context');
+const {promisify} = require('util');
 
+const pDecode = promisify(decode);
 
+module.exports = async function (buffer, {
+    width = 900,
+    height = 90,
+    wavecolor = '#000',
+    bgcolor,
+    barWidth = 1,
+    barSpace = 0
+} = {}, callback) {
+    let audioBuffer = await pDecode(buffer, { context: getContext() });
+    let canvas = createCanvas(width, height);
+    let ctx = canvas.getContext('2d');
 
-
-module.exports = (buffer, params, cb) => {
-
-  decode(buffer, {
-    context: getContext()
-  }, (err, audioBuffer) => {
-    var canvas = new Canvas(params.width || 400, params.height || 80)
-    var ctx = canvas.getContext('2d');
-    var width = canvas.width;
-    var height = canvas.height;
-    if (params.bgcolor) {
-      ctx.fillStyle = params.bgcolor;
-      ctx.fillRect(0, 0, width, height)
+    if (bgcolor) {
+        ctx.fillStyle = bgcolor;
+        ctx.fillRect(0, 0, width, height);
     }
-    var data = audioBuffer.getChannelData(0)
-    var step = Math.ceil(data.length / width);
-    var amp = height / 2;
-    for (var i = 0; i < width; i++) {
-      var min = 1.0;
-      var max = -1.0;
-      for (var j = 0; j < step; j++) {
-        var datum = data[(i * step) + j];
-        if (datum < min)
-          min = datum;
-        if (datum > max)
-          max = datum;
-      }
-      ctx.fillStyle = params.wavecolor || '#000';
-      ctx.fillRect(i, (1 + min) * amp, 1, Math.max(1, (max - min) * amp));
+
+    let data = audioBuffer.getChannelData(0);
+    let amp = height / 2;
+    let count = Math.floor((barSpace + width) / (barWidth + barSpace));
+    let step = data.length / count;
+
+    for (let i = 0; i < count; i++) {
+        let min = 1;
+        let max = -1;
+        for (let j = 0; j < step; j++) {
+            let val = data[Math.floor(i * step + j)];
+            if (val < min) {
+                min = val;
+            }
+            if (val > max) {
+                max = val;
+            }
+        }
+        ctx.fillStyle = wavecolor;
+        ctx.fillRect(i * (barWidth + barSpace), (1 + min) * amp, barWidth, Math.max(1, (max - min) * amp));
     }
-    var buf = canvas.toBuffer();
-    cb(buf)
-  });
+
+    let buf = canvas.toBuffer();
+    if (callback) {
+        callback(buf);
+    }
+    else {
+        return buf;
+    }
 };

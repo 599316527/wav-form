@@ -22,8 +22,8 @@
   },
   "homepage": "https://github.com/AZOPCORP/wav-form#readme",
   "dependencies": {
-    "audio-context": "^1.0.1",
-    "audio-decode": "^1.2.5",
-    "canvas": "^1.6.5"
+    "audio-context": "^1.0.3",
+    "audio-decode": "^1.4.0",
+    "canvas": "^2.5.0"
   }
 }
